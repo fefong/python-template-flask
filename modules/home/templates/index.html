@@ -48,9 +48,51 @@
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div id="box1" class="col text-center bg-info text-white">
+                Box 1
+            </div>
+            <div id="box2" class="col text-center bg-dark text-white">
+                Box 2
+            </div>
+            <div id="box3" class="col text-center bg-info text-white">
+                Box 3
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col text-center">
+                <button onclick="updateBox(1)">Atualizar Box 1</button>
+                <button onclick="updateBox(2)">Atualizar Box 2</button>
+                <button onclick="updateBox(3)">Atualizar Box 3</button>
+            </div>
+        </div>
     </div>
 
 </div>
 </body>
 <script src="{{url_for('static', filename='home/js/javascript.js')}}"></script>
+
+<script type="text/javascript">
+    function updateBox(boxNumber) {
+        fetch(`/update_box${boxNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                const boxElement = document.getElementById(`box${boxNumber}`);
+                boxElement.textContent = data.content;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+    function updateBoxesPeriodically() {
+        setInterval(() => {
+            updateBox(1);
+            updateBox(2);
+            updateBox(3);
+        }, {{time_update_boxes}});
+    }
+    updateBoxesPeriodically()
+</script>
 </html>
